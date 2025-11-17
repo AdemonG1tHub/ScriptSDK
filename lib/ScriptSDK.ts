@@ -1,10 +1,27 @@
-import { ScriptEventCommandMessageAfterEvent, system, world } from "@minecraft/server";
+import { Player, ScriptEventCommandMessageAfterEvent, system, world } from "@minecraft/server";
 
 export type WaitingData = {
     [key: string]: (result: any) => void;
 }
 
-export type actions = 'getIp';
+export type actions = 'getIp' | 'setBossBar';
+export enum BossBarColor {
+    BLUE,
+    GREEN,
+    PINK,
+    PURPLE,
+    REBECCA_PURPLE,
+    RED,
+    WHITE,
+    YELLOW
+}
+export enum BossBarStyle {
+    SOLID,
+    SEGMENTED_6,
+    SEGMENTED_10,
+    SEGMENTED_12,
+    SEGMENTED_20
+}
 
 export class NotFoundException extends Error {
     constructor(msg: string) {
@@ -44,7 +61,7 @@ class ScriptSDK {
         }
     }
 
-    private async send(action: actions, body: string = '', hasResult: boolean = false) : Promise<{success: boolean, code: number, result: string} | null> {
+    private async send(action: actions, body: string = '', hasResult: boolean = false): Promise<{ success: boolean, code: number, result: string } | null> {
         return new Promise((resolve) => {
 
             const id = this.generateId();
@@ -55,10 +72,10 @@ class ScriptSDK {
                 resolve(null);
             }
 
-            this.waitingData[id] = (data : string) => {
+            this.waitingData[id] = (data: string) => {
                 const regex = /^([a-z]*)#(\d{3})#(.*)$/gm; // You're not good at regular expressions, go to -> https://regex101.com/ ;D
                 let m = regex.exec(data);
-                if(m && m.length == 4) {
+                if (m && m.length == 4) {
                     resolve({
                         success: m[1] == 'true',
                         code: parseInt(m[2]),
@@ -70,15 +87,26 @@ class ScriptSDK {
     }
 
     /**
-     * Return player ip.
+     * Get player ip address.
      */
     async getIp(playerName: string) {
         const result = await this.send('getIp', playerName, true);
-        if(result?.success) {
+        if (result?.success) {
             return result.result;
         }
-        if(result?.code == 404) throw new NotFoundException(result?.result);
+        if (result?.code == 404) throw new NotFoundException(result?.result);
         throw new Error(result?.result);
+    }
+
+    /**
+     * Assigns a boss bar to a player.
+     */
+    async setBossBar(player: Player, title: string, color: BossBarColor, style: BossBarStyle, pourcent: number) {
+        const result = await this.send('setBossBar', `${title};#;${color};#;${style};#;${pourcent};#;${player.name}`);
+        if (!result?.success) {
+            if(result?.code == 404) throw new NotFoundException(result?.result);
+            throw new Error(result?.result);
+        }
     }
 }
 

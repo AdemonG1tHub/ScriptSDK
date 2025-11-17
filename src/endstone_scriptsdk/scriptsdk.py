@@ -12,11 +12,14 @@ class ScriptSDK(Plugin):
     plugin_mc_prefix = "§e[Script§1SDK] §r"
     prefix = f"{Fore.YELLOW}Script{Fore.BLUE}SDK{Fore.RESET}"
 
-    
-
     def on_load(self):
         self.logger.info(f'Loaded !')
     
     def on_enable(self):
         self.register_events(self)
         self.handler = EventHandler(self)
+
+    def on_disable(self):
+        for player, bar in self.handler.bossBars.items():
+            bar.remove_all()
+        self.logger.info(f'Unloaded !')

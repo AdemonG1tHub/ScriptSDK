@@ -15,9 +15,8 @@ ScriptSDK is a dual-component system:
 
 ## ✨ Features
 
-*Coming soon - This section will list all available features*
-
-<!-- Features will be documented here as they are implemented -->
+- getIp(playerName) -> string: Get player ip address.
+- setBossBar(player, title, color, style, pourcent):  Assigns a boss bar to a player.
 
 ## 📦 Installation
 
@@ -31,13 +30,12 @@ ScriptSDK is a dual-component system:
 
 Your add-on structure should look like:
 ```
-your-addon/
+scripts/
 ├── lib/
 │   ├── ScriptSDK.ts
 │   ├── ScriptSDK.js
-│   └── type.d.ts
-└── scripts/
-    └── your-script.js
+│   └── ScriptSDK.d.ts
+└── your-script.js
 ```
 
 ### For Server Administrators (Endstone Plugin)
@@ -55,21 +53,15 @@ After copying the SDK files to your `lib` folder, import it in your scripts:
 ```javascript
 import ScriptSDK from './lib/ScriptSDK.js';
 
-// Example usage
-const result = ScriptSDK.test();
-console.log(result); // { value: 'test' }
+const { default: ScriptSDK, BossBarColor, BossBarStyle } = require("../lib/ScriptSDK");
+
+const ip = ScriptSDK.getIp(player);
+ScriptSDK.setBossBar(player, 'Your IP : '+ip, BossBarColor.YELLOW, BossBarStyle.SOLID);
 ```
 
 ### TypeScript Support
 
-Full TypeScript support with type definitions included:
-
-```typescript
-import ScriptSDK from './lib/ScriptSDK.js';
-import type { test } from './lib/type.js';
-
-const result: test = ScriptSDK.test();
-```
+Full TypeScript support with type definitions included.
 
 ## 📝 License
 

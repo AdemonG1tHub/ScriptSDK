@@ -1,3 +1,4 @@
-const { default: ScriptSDK } = require("../lib/ScriptSDK");
+const { default: ScriptSDK, BossBarColor, BossBarStyle } = require("../lib/ScriptSDK");
 
-ScriptSDK.getIp()
+const ip = ScriptSDK.getIp(player);
+ScriptSDK.setBossBar(player, 'Your IP : '+ip, BossBarColor.YELLOW, BossBarStyle.SOLID);
