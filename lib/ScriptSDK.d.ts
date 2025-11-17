@@ -30,7 +30,7 @@ declare class ScriptSDK {
     private event;
     private send;
     /**
-     * Return player ip.
+     * Get player ip address.
      */
     getIp(playerName: string): Promise<string>;
     /**
