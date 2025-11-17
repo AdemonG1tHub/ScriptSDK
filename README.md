@@ -51,9 +51,7 @@ scripts/
 After copying the SDK files to your `lib` folder, import it in your scripts:
 
 ```javascript
-import ScriptSDK from './lib/ScriptSDK.js';
-
-const { default: ScriptSDK, BossBarColor, BossBarStyle } = require("../lib/ScriptSDK");
+import ScriptSDK, { BossBarColor, BossBarStyle } from 'lib/ScriptSDK';
 
 const ip = ScriptSDK.getIp(player);
 ScriptSDK.setBossBar(player, 'Your IP : '+ip, BossBarColor.YELLOW, BossBarStyle.SOLID);
