@@ -2,6 +2,7 @@ from endstone import Player
 from endstone.plugin import Plugin
 from endstone.event import event_handler, ScriptMessageEvent
 from endstone.boss import BossBar, BarFlag, BarColor, BarStyle
+from endstone.command import CommandSenderWrapper
 from colorama import Fore
 import json, re
 from endstone_scriptsdk.src.utils import sendCustomNameToPlayerForPlayer
@@ -17,7 +18,8 @@ class EventHandler:
         plugin.logger.info('EventHandler listening...')
 
     def send_script_event(self, uuid, body):
-        self.plugin.server.dispatch_command(self.plugin.server.command_sender, f'scriptevent scriptsdkresult:{uuid} {body}')
+        sender = CommandSenderWrapper(self.plugin.server.command_sender)
+        self.plugin.server.dispatch_command(sender, f'scriptevent scriptsdkresult:{uuid} {body}')
         self.logger.debug(f'Result send ! ({Fore.CYAN}{uuid}{Fore.RED} => {Fore.GREEN}{body}{Fore.RESET})')
     
     def response(self, uuid: str, success: bool, code: int, response: str):
