@@ -7,7 +7,7 @@ import json, re
 
 class EventHandler:
 
-    bossBars : dict[Player, BossBar] = []
+    bossBars : dict[Player, BossBar] = {}
 
     def __init__(self, plugin : Plugin):
         self.plugin = plugin
