@@ -2,7 +2,7 @@ import { Player } from "@minecraft/server";
 export type WaitingData = {
     [key: string]: (result: any) => void;
 };
-export type actions = 'getIp' | 'setBossBar';
+export type actions = 'getIp' | 'setBossBar' | 'setPlayerNameForPlayer';
 export declare enum BossBarColor {
     BLUE = 0,
     GREEN = 1,
@@ -37,6 +37,10 @@ declare class ScriptSDK {
      * Assigns a boss bar to a player.
      */
     setBossBar(player: Player, title: string, color: BossBarColor, style: BossBarStyle, pourcent: number): Promise<void>;
+    /**
+     * Configures the player name for the target. (Please note that this function must be used in a loop, otherwise Minecraft will reset the nickname.)
+     */
+    setPlayerNameForPlayer(target: Player, player: Player, newName: string): Promise<void>;
 }
 declare const _default: ScriptSDK;
 export default _default;

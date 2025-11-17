@@ -17,6 +17,7 @@ ScriptSDK is a dual-component system:
 
 - getIp(playerName) -> string: Get player ip address.
 - setBossBar(player, title, color, style, pourcent):  Assigns a boss bar to a player.
+- setPlayerNameForPlayer(target, player, newName): Configures the player name for the target. (Please note that this function must be used in a loop, otherwise Minecraft will reset the nickname.)
 
 ## 📦 Installation
 
@@ -51,10 +52,11 @@ scripts/
 After copying the SDK files to your `lib` folder, import it in your scripts:
 
 ```javascript
-import ScriptSDK, { BossBarColor, BossBarStyle } from 'lib/ScriptSDK';
+import ScriptSDK, { BossBarColor, BossBarStyle } from '../lib/ScriptSDK';
 
 const ip = ScriptSDK.getIp(player);
 ScriptSDK.setBossBar(player, 'Your IP : '+ip, BossBarColor.YELLOW, BossBarStyle.SOLID);
+ScriptSDK.setPlayerNameForPlayer(target_steve, player_drewen, "DreWen15 (Only Visible by Steve)");
 ```
 
 ### TypeScript Support

@@ -4,7 +4,7 @@ export type WaitingData = {
     [key: string]: (result: any) => void;
 }
 
-export type actions = 'getIp' | 'setBossBar';
+export type actions = 'getIp' | 'setBossBar' | 'setPlayerNameForPlayer';
 export enum BossBarColor {
     BLUE,
     GREEN,
@@ -104,7 +104,18 @@ class ScriptSDK {
     async setBossBar(player: Player, title: string, color: BossBarColor, style: BossBarStyle, pourcent: number) {
         const result = await this.send('setBossBar', `${title};#;${color};#;${style};#;${pourcent};#;${player.name}`);
         if (!result?.success) {
-            if(result?.code == 404) throw new NotFoundException(result?.result);
+            if (result?.code == 404) throw new NotFoundException(result?.result);
+            throw new Error(result?.result);
+        }
+    }
+
+    /**
+     * Configures the player name for the target. (Please note that this function must be used in a loop, otherwise Minecraft will reset the nickname.)
+     */
+    async setPlayerNameForPlayer(target: Player, player: Player, newName: string) {
+        const result = await this.send('setPlayerNameForPlayer', `${target.name};#;${player.name};#;${newName}`);
+        if (!result?.success) {
+            if (result?.code == 404) throw new NotFoundException(result?.result);
             throw new Error(result?.result);
         }
     }

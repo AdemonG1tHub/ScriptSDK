@@ -4,6 +4,7 @@ from endstone.event import event_handler, ScriptMessageEvent
 from endstone.boss import BossBar, BarFlag, BarColor, BarStyle
 from colorama import Fore
 import json, re
+from endstone_scriptsdk.src.utils import sendCustomNameToPlayerForPlayer
 
 class EventHandler:
 
@@ -95,6 +96,24 @@ class EventHandler:
                         self.bossBars[player] = bossBar
 
                         return self.response(uuid, True, 201, 'BossBar created !')
+                    
+                    case 'setPlayerNameForPlayer':
+                        '''
+                            Body: targetName;#;playerName;#;newPlayerName
+                        '''
+                        result = re.match(r'^(.*);#;(.*);#;(.*)$')
+                        target = self.plugin.server.get_player(result[1])
+                        if not target:
+                            return self.response(uuid, False, 404, 'target not found');
+                        player = self.plugin.server.get_player(result[2])
+                        if not target:
+                            return self.response(uuid, False, 404, 'player not found');
+        
+                        sendCustomNameToPlayerForPlayer(player, player.runtime_id, result[3])
+                        
+                        return self.response(uuid, True, 200, 'Name set !')
+
+
 
             except Exception as e:
                 self.response(uuid, False, 500, str(e))
