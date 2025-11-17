@@ -18,7 +18,7 @@ class EventHandler:
 
     def send_script_event(self, uuid, body):
         self.plugin.server.dispatch_command(self.plugin.server.command_sender, f'scriptevent scriptsdkresult:{uuid} {body}')
-        self.logger.info(f'Result send ! ({Fore.CYAN}{uuid}{Fore.RED} => {Fore.GREEN}{body}{Fore.RESET})')
+        self.logger.debug(f'Result send ! ({Fore.CYAN}{uuid}{Fore.RED} => {Fore.GREEN}{body}{Fore.RESET})')
     
     def response(self, uuid: str, success: bool, code: int, response: str):
         return self.send_script_event(uuid, f'{"true" if success else "false"};#;{code};#;{response}')
@@ -33,7 +33,7 @@ class EventHandler:
             event.cancel()
             uuid = parsed_id[1]
             action = parsed_id[2]
-            self.logger.info(f'Valid message received! ({Fore.CYAN}{uuid}{Fore.RED} -> {Fore.YELLOW}{action}{Fore.RED} => {Fore.GREEN}{message}{Fore.RESET})')
+            self.logger.debug(f'Valid message received! ({Fore.CYAN}{uuid}{Fore.RED} -> {Fore.YELLOW}{action}{Fore.RED} => {Fore.GREEN}{message}{Fore.RESET})')
 
             # --> Result Body : success:boolean;#;code:number;#;result:any
             

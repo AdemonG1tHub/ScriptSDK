@@ -12,7 +12,23 @@ class ScriptSDK(Plugin):
     plugin_mc_prefix = "§e[Script§1SDK] §r"
     prefix = f"{Fore.YELLOW}Script{Fore.BLUE}SDK{Fore.RESET}"
 
+    commands = {
+        "debug" : {
+            "description" : "Enable/Disable debugging (Console)",
+            "usages" : ["/debug"],
+            "permissions" : ["debug.command.default"]
+        }
+    }
+
+    permissions = {
+        "debug.command.default": {
+            "description": "OP Permission",
+            "default" : "op"
+        }
+    }
+
     def on_load(self):
+        self.logger.set_level(self.logger.INFO)
         self.logger.info(f'Loaded !')
     
     def on_enable(self):
@@ -23,3 +39,15 @@ class ScriptSDK(Plugin):
         for player, bar in self.handler.bossBars.items():
             bar.remove_all()
         self.logger.info(f'Unloaded !')
+    
+    def on_command(self, sender, command, args):
+
+        if command.name == "debug":
+            if self.logger.level == self.logger.INFO:
+                self.logger.set_level(self.logger.DEBUG)
+                sender.send_message(self.plugin_mc_prefix+"§aDebug enabled!")
+            else:
+                self.logger.set_level(self.logger.INFO)
+                sender.send_message(self.plugin_mc_prefix+"§cDebug disabled!")
+
+        return True
