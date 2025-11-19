@@ -5,11 +5,12 @@ from endstone.boss import BossBar, BarFlag, BarColor, BarStyle
 from endstone.command import CommandSenderWrapper
 from colorama import Fore
 import json, re
-from endstone_scriptsdk.src.utils import sendCustomNameToPlayerForPlayer
+
 
 class EventHandler:
 
     bossBars : dict[Player, BossBar] = {}
+    nameTagCache : dict[str, dict[str, str]] = {}
 
     def __init__(self, plugin : Plugin):
         self.plugin = plugin
@@ -108,12 +109,34 @@ class EventHandler:
                         if not target:
                             return self.response(uuid, False, 404, 'target not found');
                         player = self.plugin.server.get_player(result[2])
-                        if not target:
+                        if not player:
                             return self.response(uuid, False, 404, 'player not found');
-        
-                        sendCustomNameToPlayerForPlayer(player, player.runtime_id, result[3])
+
+                        if player.name in self.nameTagCache:
+                            self.nameTagCache[player.name][target.name] = result[3]
+                        else:
+                            self.nameTagCache[player.name] = {
+                                target.name: result[3]
+                            }
                         
                         return self.response(uuid, True, 200, 'Name set !')
+                    
+                    case 'resetPlayerNameForPlayer':
+                        '''
+                            Body: targetName;#;playerName
+                        '''
+                        result = re.match(r'^(.*);#;(.*);#;(.*)$')
+                        target = self.plugin.server.get_player(result[1])
+                        if not target:
+                            return self.response(uuid, False, 404, 'target not found');
+                        player = self.plugin.server.get_player(result[2])
+                        if not player:
+                            return self.response(uuid, False, 404, 'player not found');
+
+                        if player.name in self.nameTagCache and target.name in self.nameTagCache[player.name]:
+                            del self.nameTagCache[player.name][target.name]
+                        
+                        return self.response(uuid, True, 200, 'Name reset !')
 
 
 
