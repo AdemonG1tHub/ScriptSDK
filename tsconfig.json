@@ -16,11 +16,16 @@
     "allowJs": true,
     "checkJs": false,
     "allowSyntheticDefaultImports": true,
+    "preserveWatchOutput": true,
+    "noEmitOnError": false,
   },
   "include": [
     "lib/**/*.ts",
     "lib/**/*.d.ts"
   ],
+  "ts-node": {
+    "files": true
+  },
   "exclude": [
     "node_modules"
   ]
