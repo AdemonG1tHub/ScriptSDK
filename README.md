@@ -15,6 +15,8 @@ ScriptSDK is a dual-component system:
 
 ## ✨ Features
 
+- /debug : To enable/disable the plugin's communication logs.
+
 ### 💫 Basic features
 
 - **player.ip** → `string | null`: Player's IP address (automatically set)
