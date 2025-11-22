@@ -4,6 +4,9 @@ import { NotFoundException } from "./src/exceptions";
 import { Player } from '@minecraft/server';
 import { BossBarColor, BossBarStyle } from "./src/enums";
 import caches from "./src/caches";
+import { Group } from "./src/groups";
+
+export const prefix = "[ScriptSDK] ";
 
 declare module '@minecraft/server' {
     interface Player {
@@ -28,26 +31,26 @@ declare module '@minecraft/server' {
          * Reset the name of the player visible to the targeted player.
          */
         resetNameTagForPlayer(target: Player): Promise<void>;
+
+        groups: Group[];
     }
 }
-
-
 
 function loadPlayer(player: Player) {
     ScriptSDK.send('getIp', [player.name]).then((result) => {
         if (result.success) {
             player.ip = result.result;
         }else{
-            if (result.code == 404) throw new NotFoundException(result?.result);
-            throw new Error(result?.result);
+            if (result.code == 404) throw new NotFoundException(prefix+result?.result);
+            throw new Error(prefix+result?.result);
         }
     });
 
     player.setBossBar = async (title, color, style, percent) => {
         const result = await ScriptSDK.send('setBossBar', [title, `${color}`, `${style}`, `${percent}`, `${player.name}`]);
         if (!result?.success) {
-            if (result?.code == 404) throw new NotFoundException(result?.result);
-            throw new Error(result?.result);
+            if (result?.code == 404) throw new NotFoundException(prefix+result?.result);
+            throw new Error(prefix+result?.result);
         }
     }
 
@@ -58,8 +61,8 @@ function loadPlayer(player: Player) {
         caches.nameTagCache[player.name][target.name] = newName;
         const result = await ScriptSDK.send('setPlayerNameForPlayer', [target.name, player.name, newName]);
         if (!result?.success) {
-            if (result?.code == 404) throw new NotFoundException(result?.result);
-            throw new Error(result?.result);
+            if (result?.code == 404) throw new NotFoundException(prefix+result?.result);
+            throw new Error(prefix+result?.result);
         }
     }
 
@@ -70,14 +73,16 @@ function loadPlayer(player: Player) {
     player.resetNameTagForPlayer = async (target) => {
         if (Object.keys(caches.nameTagCache[player.name]).includes(target.name)) {
             delete caches.nameTagCache[player.name][target.name];
-
+            
             const result = await ScriptSDK.send('resetPlayerNameForPlayer', [target.name, player.name]);
             if (!result?.success) {
-                if (result?.code == 404) throw new NotFoundException(result?.result);
-                throw new Error(result?.result);
+                if (result?.code == 404) throw new NotFoundException(prefix+result?.result);
+                throw new Error(prefix+result?.result);
             }
         }
     }
+
+    player.groups = [];
 }
 
 world.afterEvents.playerSpawn.subscribe(async (e) => {

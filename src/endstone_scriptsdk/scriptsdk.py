@@ -1,7 +1,9 @@
 from endstone.plugin import Plugin
 from colorama import Fore
+from endstone.event import event_handler, ActorDamageEvent
 from endstone_scriptsdk.handler import EventHandler
 from endstone_scriptsdk.src.utils import sendCustomNameToPlayerForPlayer
+from endstone_scriptsdk.src.groups import Group, Rule
 
 class ScriptSDK(Plugin):
     api_version = "0.10"

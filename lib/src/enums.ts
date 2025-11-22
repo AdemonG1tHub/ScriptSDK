@@ -17,7 +17,10 @@ export enum BossBarStyle {
     SEGMENTED_20 = 4
 }
 
-export enum TeamRule {
-    PVP_FALSE = 0,
-    PVP_NO_DAMAGE = 1
+export enum GroupRule {
+    NO_PVP = 0,
+    NO_DAMAGE = 1,
+    PVP_ONLY_GROUP = 3,
+    NO_PVP_NO_DAMAGE = 4,
+    NO_PVP_ONLY_GROUP = 5
 }
