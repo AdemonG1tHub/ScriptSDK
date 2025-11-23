@@ -40,7 +40,7 @@ class ScriptSDK {
             
             const id = this.generateId();
 
-            world.getDimension('overworld').runCommand(`scriptevent scriptsdk:${id}-${action} ${body.join(';#;')}`);
+            system.sendScriptEvent(`scriptsdk:${id}-${action}`, `${body.join(';#;')}`);
 
             this.waitingData[id] = (data: string) => {
                 const regex = /^([a-z]*);#;(\d{3});#;(.*)$/gm; // You're not good at regular expressions, go to -> https://regex101.com/ ;D
