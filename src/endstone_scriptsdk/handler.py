@@ -44,7 +44,7 @@ class EventHandler:
             
             try:
                 match action:
-                    case 'getIp':
+                    case 'getPlayerIp':
                         '''
                             body: playerName
                         '''
@@ -52,6 +52,24 @@ class EventHandler:
                         if not player:
                             return self.response(uuid, False, 404, 'player not found');
                         return self.response(uuid, True, 200, player.address.hostname)
+                    
+                    case 'getPlayerPing':
+                        '''
+                            Body: playerName
+                        '''
+                        player = self.plugin.server.get_player(message)
+                        if not player:
+                            return self.response(uuid, False, 404, 'player not found');
+                        return self.response(uuid, True, 200, player.ping)
+                    
+                    case 'getPlayerXuid':
+                        '''
+                            Body: playerName
+                        '''
+                        player = self.plugin.server.get_player(message)
+                        if not player:
+                            return self.response(uuid, False, 404, 'player not found');
+                        return self.response(uuid, True, 200, player.xuid)
 
                     case 'setBossBar':
                         '''

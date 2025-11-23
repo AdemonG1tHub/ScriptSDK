@@ -20,6 +20,8 @@ ScriptSDK is a dual-component system:
 ### 💫 Player Features
 
 - **player.ip** → `string | null`: Player's IP address (automatically populated when player spawns)
+- **player.xuid** → `string | null`: Player's Xbox User ID (automatically populated when player spawns)
+- **player.getPing()** → `Promise<number>`: Get the player's current ping/latency in milliseconds
 - **player.setBossBar(title, color, style, percent)** → `Promise<void>`: Create and assign a boss bar to a player with customizable progress percentage (0-100)
 - **player.setNameTagForPlayer(target, newName)** → `Promise<void>`: Set custom player name visible to specific players
 - **player.resetNameTagForPlayer(target)** → `Promise<void>`: Reset custom player name to default for a specific target player

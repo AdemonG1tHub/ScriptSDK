@@ -10,7 +10,9 @@ export const prefix = "[ScriptSDK] ";
 
 declare module '@minecraft/server' {
     interface Player {
+        
         ip: string | null;
+        xuid: string | null;
 
         /**
          *  Assigns a boss bar to a player.
@@ -32,14 +34,31 @@ declare module '@minecraft/server' {
          */
         resetNameTagForPlayer(target: Player): Promise<void>;
 
+        /**
+         * List of groups where the player is located.
+         */
         groups: Group[];
+
+        /**
+         * Get the player's ping
+         */
+        getPing(): Promise<number>;
     }
 }
 
 function loadPlayer(player: Player) {
-    ScriptSDK.send('getIp', [player.name]).then((result) => {
+    ScriptSDK.send('getPlayerIp', [player.name]).then((result) => {
         if (result.success) {
             player.ip = result.result;
+        }else{
+            if (result.code == 404) throw new NotFoundException(prefix+result?.result);
+            throw new Error(prefix+result?.result);
+        }
+    });
+
+    ScriptSDK.send('getPlayerXuid', [player.name]).then((result) => {
+        if (result.success) {
+            player.xuid = result.result;
         }else{
             if (result.code == 404) throw new NotFoundException(prefix+result?.result);
             throw new Error(prefix+result?.result);
@@ -83,14 +102,19 @@ function loadPlayer(player: Player) {
     }
 
     player.groups = [];
+
+    player.getPing = async () => {
+        const result = await ScriptSDK.send('getPlayerPing', [player.name]);
+        if (!result?.success) {
+            if (result?.code == 404) throw new NotFoundException(prefix+result?.result);
+            throw new Error(prefix+result?.result);
+        }
+        return parseInt(result.result);
+    }
 }
 
 world.afterEvents.playerSpawn.subscribe(async (e) => {
     const player = e.player;
 
     loadPlayer(player);
-});
-
-world.afterEvents.worldLoad.subscribe((e) => {
-    world.getAllPlayers().forEach((p) => loadPlayer(p));
 });
