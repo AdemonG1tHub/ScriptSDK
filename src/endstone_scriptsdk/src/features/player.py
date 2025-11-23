@@ -1,3 +1,5 @@
+from endstone import Player
+
 class PlayerData:
     @staticmethod
     def request(handler, uuid, action, message):
@@ -6,7 +8,7 @@ class PlayerData:
                 '''
                     body: playerName
                 '''
-                player = handler.plugin.server.get_player(message)
+                player : Player = handler.plugin.server.get_player(message)
                 if not player:
                     return handler.response(uuid, False, 404, 'player not found');
                 return handler.response(uuid, True, 200, [player.address.hostname])
@@ -15,7 +17,7 @@ class PlayerData:
                 '''
                     Body: playerName
                 '''
-                player = handler.plugin.server.get_player(message)
+                player : Player = handler.plugin.server.get_player(message)
                 if not player:
                     return handler.response(uuid, False, 404, 'player not found');
                 return handler.response(uuid, True, 200, [player.ping])
@@ -24,7 +26,16 @@ class PlayerData:
                 '''
                     Body: playerName
                 '''
-                player = handler.plugin.server.get_player(message)
+                player : Player = handler.plugin.server.get_player(message)
                 if not player:
                     return handler.response(uuid, False, 404, 'player not found');
                 return handler.response(uuid, True, 200, [player.xuid])
+            
+            case 'getPlayerOS':
+                '''
+                    Body: playerName
+                '''
+                player : Player = handler.plugin.server.get_player(message)
+                if not player:
+                    return handler.response(uuid, False, 404, 'player not found');
+                return handler.response(uuid, True, 200, [player.device_os])

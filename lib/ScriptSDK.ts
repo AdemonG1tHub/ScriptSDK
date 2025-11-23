@@ -13,6 +13,7 @@ declare module '@minecraft/server' {
         
         ip: string | null;
         xuid: string | null;
+        device_os: string | null;
 
         /**
          *  Assigns a boss bar to a player.
@@ -59,6 +60,15 @@ function loadPlayer(player: Player) {
     ScriptSDK.send('getPlayerXuid', [player.name]).then((result) => {
         if (result.success) {
             player.xuid = result.result;
+        }else{
+            if (result.code == 404) throw new NotFoundException(prefix+result?.result);
+            throw new Error(prefix+result?.result);
+        }
+    });
+
+    ScriptSDK.send('getPlayerOS', [player.name]).then((result) => {
+        if (result.success) {
+            player.device_os = result.result;
         }else{
             if (result.code == 404) throw new NotFoundException(prefix+result?.result);
             throw new Error(prefix+result?.result);
