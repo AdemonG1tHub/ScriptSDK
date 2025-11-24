@@ -100,4 +100,14 @@ export class Group {
         }
         
     }
+
+    toJson() {
+        return {
+            name: this.name,
+            rule: this.rule,
+            is_destroy: this.is_destroy,
+            is_created: this.is_created,
+            players: this.players
+        }
+    }
 }
