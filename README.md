@@ -25,6 +25,7 @@ ScriptSDK is a dual-component system:
 - **player.device_os** → `string | null`: Player's device OS (automatically populated when player spawns)
 - **player.getPing()** → `Promise<number>`: Get the player's current ping/latency in milliseconds
 - **player.setBossBar(title, color, style, percent)** → `Promise<void>`: Create and assign a boss bar to a player with customizable progress percentage (0-100)
+- **player.setBossBar()** → `Promise<void>`: Reset boss bar to a player.
 - **player.setNameTagForPlayer(target, newName)** → `Promise<void>`: Set custom player name visible to specific players
 - **player.resetNameTagForPlayer(target)** → `Promise<void>`: Reset custom player name to default for a specific target player
 - **player.getNameTagByPlayer(target)** → `string`: Get the custom name tag that a specific player sees for this player

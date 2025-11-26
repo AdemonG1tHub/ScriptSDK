@@ -23,7 +23,7 @@ declare module '@minecraft/server' {
         /**
          * Reset a boss bar to a player.
          */
-        resetBossBar(player: Player): Promise<void>;
+        resetBossBar(): Promise<void>;
 
         /**
          * Defines the target player name for the player.
@@ -89,7 +89,7 @@ function loadPlayer(player: Player) {
         }
     }
 
-    player.resetBossBar = async (player) => {
+    player.resetBossBar = async () => {
         const result = await ScriptSDK.send('resetBossBar', [`${player.name}`]);
         if (!result?.success) {
             if (result?.code == 404) throw new NotFoundException(prefix+result?.result);
