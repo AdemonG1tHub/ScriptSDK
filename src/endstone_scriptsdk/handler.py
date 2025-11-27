@@ -9,6 +9,7 @@ from endstone_scriptsdk.src.features.groups import Group
 from endstone_scriptsdk.src.features.bossBar import BossBar
 from endstone_scriptsdk.src.features.clientName import ClientName
 from endstone_scriptsdk.src.features.player import PlayerData
+from endstone_scriptsdk.src.features.server import ServerData
 
 if typing.TYPE_CHECKING:
     from endstone_scriptsdk.scriptsdk import ScriptSDK
@@ -55,6 +56,7 @@ class EventHandler:
                 BossBar.request(self, uuid, action, message)
                 ClientName.request(self, uuid, action, message)
                 PlayerData.request(self, uuid, action, message)
+                ServerData.request(self, uuid, action, message)
 
             except Exception as e:
                 self.response(uuid, False, 500, [str(e)])
