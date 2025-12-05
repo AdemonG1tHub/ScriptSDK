@@ -10,7 +10,7 @@ class EntityData:
         match action:
             case 'setEntityNameForPlayer':
                 '''
-                    Body: targetName;#;runtimeId;#;newPlayerName
+                    Body: targetName;#;id;#;newPlayerName
                 '''
                 result = handler.deserializer(message, 3)
                 target = handler.plugin.server.get_player(result[1])
@@ -28,7 +28,7 @@ class EntityData:
             
             case 'resetEntityNameForPlayer':
                 '''
-                    Body: targetName;#;runtimeId;#;originalName
+                    Body: targetName;#;id;#;originalName
                 '''
                 result = handler.deserializer(message, 2)
                 target = handler.plugin.server.get_player(result[1])
@@ -38,6 +38,8 @@ class EntityData:
                 if result[2] in handler.nameTagCache and target.name in handler.nameTagCache[result[2]]:
                     del handler.nameTagCache[result[2]][target.name]
 
-                sendCustomNameToPlayerForEntity(target, int(result[2]), result[3])
+                for entity in handler.plugin.server.level.actors:
+                    if entity.id == int(result[2]):
+                        sendCustomNameToPlayerForEntity(target, entity.runtime_id, result[3])
                 
                 return handler.response(uuid, True, 200, ['name reset'])
