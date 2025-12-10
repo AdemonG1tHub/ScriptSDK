@@ -30,6 +30,8 @@ ScriptSDK is a dual-component system:
 - **player.getPing()** → `Promise<number>`: Get the player's current ping/latency in milliseconds
 - **player.setBossBar(title, color, style, percent)** → `Promise<void>`: Create and assign a boss bar to a player with customizable progress percentage (0-100)
 - **player.resetBossBar()** → `Promise<void>`: Reset boss bar to a player.
+- **player.sendToast(title, content)** → `Promise<void>`: Send toast notification.
+- **player.sendPopup(message)** → `Promise<void>`: Send popup.
 
 ### 💫 Entity Features
 
