@@ -43,6 +43,16 @@ declare module '@minecraft/server' {
          * Get the player's ping
          */
         getPing(): Promise<number>;
+
+        /**
+         * Send toast notification. 
+         */
+        sendToast(title: string, content: string): Promise<void>;
+
+        /**
+         * Send popup. 
+         */
+        sendPopup(message: string): Promise<void>;
     }
 
     interface Entity {
@@ -147,6 +157,22 @@ function loadPlayer(player: Player) {
             throw new Error(prefix + result?.result[0]);
         }
         return parseInt(result.result[0]);
+    }
+
+    player.sendToast = async (title, content) => {
+        const result = await ScriptSDK.send('sendToast', [player.name, title, content]);
+        if (!result?.success) {
+            if (result?.code == 404) throw new NotFoundException(prefix + result?.result[0]);
+            throw new Error(prefix + result?.result[0]);
+        }
+    }
+
+    player.sendPopup = async (message) => {
+        const result = await ScriptSDK.send('sendPopup', [player.name, message]);
+        if (!result?.success) {
+            if (result?.code == 404) throw new NotFoundException(prefix + result?.result[0]);
+            throw new Error(prefix + result?.result[0]);
+        }
     }
 }
 
